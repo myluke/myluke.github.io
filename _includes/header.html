@@ -10,7 +10,7 @@
 
       <div class="trigger">
           {% for nav in site.navs %}
-          <a href="{{ nav.href }}" class="page-link" target="{{ nav.target | default: _self }}" title="{{ nav.label }}">{{ nav.label }}</a>
+          <a href="{{ site.baseurl }}{{ nav.href }}" class="page-link" target="{{ nav.target | default: _self }}" title="{{ nav.label }}">{{ nav.label }}</a>
           {% endfor %}
       </div>
     </nav>
