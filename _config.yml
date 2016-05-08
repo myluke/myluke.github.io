@@ -3,7 +3,7 @@ title: Hi,Luke
 email: Luke@kanheze.com
 description: 翻过墙，下过厨房，杀的了木马，上的了厅堂的21世纪新男人！爱电影，也爱旅行...是美女爱好者，还想当个100%的吃货 -_-!!..
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://my.kanheze.com" # the base hostname & protocol for your site
+url: "http://blog.kanheze.com" # the base hostname & protocol for your site
 github_username:  myluke
 timezone:    PRC
 encoding: "utf-8"
