@@ -1,0 +1,178 @@
+---
+layout: post
+title:  "Zen Cart 首页幻灯片效果 完整代码实例"
+date:   2011-05-18 13:35:00 +0800
+excerpt: Zen Cart 首页幻灯片效果 完整代码实例
+categories: jekyll update
+---   
+<!--markdown-->下面代码复制下，如果项目中引用过jquery话：
+【`<script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>`】
+下面页面里的这个引用去掉即可！！
+ 
+ 
+代码如下：
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Zen Cart 首页幻灯片效果</title>
+    <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript">
+    $(document).ready(
+        function() {
+            index_slider();
+        }
+    );
+    
+    function index_slider() {
+        var i = 0;
+        var imax = $('.index_ad_img > li').length;
+        var s = 300; //渐隐渐显过渡时间
+        var t_s = 4000; //广告切换时间
+        var timeout = null;
+        //显示哪个tab
+        function moveToAd(n) {
+            i = n;
+            $('.index_ad_img > li.first').fadeOut(s, function() {
+                $(this).removeClass('first');
+                $('.index_ad_img > li').eq(n).addClass('first').fadeIn(s);
+                $('.index_ad_btn > li').removeClass('first').eq(n).addClass('first');
+            });
+        }
+        //初始化广告动画
+        function init_ad() {
+            timeout = setTimeout(function() {
+                i++;
+                if(i > imax - 1) i = 0;
+                moveToAd(i);
+                init_ad();
+            }, t_s);
+        }
+        //绑定事件
+        function bindEvent() {
+            $('.index_ad').hover(
+                function() {
+                    clearTimeout(timeout);
+                },
+                function() {
+                    init_ad();
+                }
+            );
+            $('.index_ad_btn > li').mouseover(
+                function() {
+                    var n = $('.index_ad_btn > li').index(this);
+                    moveToAd(n);
+                }
+            );
+        }
+        bindEvent();
+        init_ad();
+    }
+    </script>
+    <style type="text/css">
+    body {
+        font-size:12px;
+    }
+    body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div {
+        border:0 none;
+        margin:0;
+        padding:0;
+        list-style-type:none;
+    }
+    a {
+        font-size:12px;
+        text-decoration:none;
+        color:#000000;
+    }
+    a:hover {
+        color:#FF0000;
+        text-decoration:none;
+    }
+    a:link {
+        color:#000000;
+    }
+    a:active {
+        color:#000000;
+    }
+    .clear {
+        clear:both;
+    }
+    #content {
+        margin:0px;
+        position:relative;
+    }
+    .index_ad {
+        position:relative;
+        z-index:1;
+        width:673px;
+        height:224px;
+        overflow:hidden;
+    }
+    .index_ad ul {
+        position:relative;
+    }
+    .index_ad ul.index_ad_img li {
+        position:absolute;
+        z-index:1;
+        visibility:hidden;
+    }
+    .index_ad ul.index_ad_img li.first {
+        z-index:2;
+        visibility:visible;
+    }
+    .index_ad_img li a img {
+        width:100%!important;
+    }
+    .index_ad ul.index_ad_btn {
+        position:absolute;
+        z-index:2;
+        bottom:0;
+        right:0;
+        font-weight:bold;
+        color:#fff;
+        height:20px;
+        line-height:20px;
+        filter:alpha(opacity=70);
+        -moz-opacity:0.7;
+        -khtml-opacity: 0.7;
+        opacity: 0.7;
+    }
+    .index_ad ul.index_ad_btn li {
+        float:left;
+        background:#000;
+        width:20px;
+        text-align:center;
+        cursor:pointer;
+    }
+    .index_ad ul.index_ad_btn li.first {
+        background:#fff;
+        color:#000;
+        filter:alpha(opacity=70);
+        -moz-opacity:0.7;
+        -khtml-opacity: 0.7;
+        opacity: 0.7;
+    }
+    </style>
+    </head>
+    <body>
+    <div id="content">
+      <div class="index_ad">
+        <ul class="index_ad_img">
+          <li class="first"><a href="#" target="_blank"><img src="images/zen-cart.jpg" alt="zen-cart" title=" zen-cart " width="946" height="266" /></a></li>
+          <li><a href="#" target="_blank"><img src="images/banner1.jpg" alt="MaZenTop外贸" title=" MaZenTop外贸 " width="686" height="225" /></a></li>
+          <li><a href="#" target="_blank"><img src="images/{002D9033-F47D-45B0-8211-FF630BDE1113}.jpg" alt="借卖网&zencart" title=" 借卖网&zencart " width="673" height="225" /></a></li>
+          <li><a href="#" target="_blank"><img src="images/seowhy.jpg" alt="seowhy" title=" seowhy " width="674" height="224" /></a></li>
+          <li><a href="#" target="_blank"><img src="images/chongchong.jpg" alt="虫虫博客" title=" 虫虫博客 " width="946" height="266" /></a></li>
+        </ul>
+        <ul class="index_ad_btn">
+          <li class="first">1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+          <li>5</li>
+        </ul>
+      </div>
+    </div>
+    </body>
+    </html>

@@ -1,0 +1,26 @@
+---
+layout: post
+title:  "implode() 函数的定义和用法"
+excerpt: 我的理解：就是把数组中的元素转换成字符串输出！implode（"?",$array）这里的问号把输出的字符串分开！
+date:   2008-09-18 22:20:00 +0800
+categories: jekyll update
+---   
+<!--markdown-->例子：
+
+    <?php
+    array = array('lastname', 'email', 'phone','name');
+    $comma_separated = implode(">", $array);
+    echo $comma_separated; //就会输出： lastname>email>phone>name
+    ?>
+
+对比
+
+    <?php
+    array = array('lastname', 'email', 'phone','name');
+    $comma_separated = implode("？", $array);
+    echo $comma_separated; //就会输出： lastname？email？phone？name
+    ?>
+
+我的理解：
+就是把数组中的元素转换成字符串输出！
+implode（"?",$array）这里的问号把输出的字符串分开！

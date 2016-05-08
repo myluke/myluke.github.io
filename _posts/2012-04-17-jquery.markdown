@@ -1,0 +1,186 @@
+---
+layout: post
+title:  "jquery +ajax +php 结合画动态显示图，模拟windows 任务管理器 cpu曲线图"
+date:   2012-04-17 17:40:00 +0800
+excerpt: 使用flot，jquery 插件。查看flot网址，学习使用方法。效果如下
+categories: jekyll update
+---   
+<!--markdown-->使用flot，jquery 插件。查看flot网址，学习使用方法。效果如下![任务管理器.jpg][1]
+
+
+<!--more-->
+
+![曲线图][2]
+
+
+  [1]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/3430954118.jpg
+  [2]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/3278298191.jpg
+因为数据库中数据没变所以上边4张图的数据都不变，获取的cpu、内存、网络、硬盘都是有python脚本去执行获取，插入数据库中，再使用php+ajax 去每个两秒去循环读取数据，原理就是这样，下面放下代码。
+test.php文件代码
+
+    <?php
+    if ($_GET['ser']) {
+        $reslut = array(
+            'cpu'=>mt_rand(50,80),
+            'mem'=>mt_rand(10,80),
+            'network'=>array('out'=>mt_rand(1,400),'ins'=>mt_rand(500,1000)),
+            'hd'=>mt_rand(50,80),
+        );
+        echo json_encode($reslut) ;
+        exit;
+    }
+    
+    ?>
+
+这是php模拟从数据库中读取的数据代码，使用jquery ajax去获取返回的json数据。
+下面的是js代码
+
+    <script type="text/javascript" src="common/js/jquery1.5.1.js"></script>
+        <script type="text/javascript" src="common/js/jquery.flot.js"></script>
+    
+        <script type="text/javascript">
+            $(function () {
+    
+                var cpu_data = [],mem_data = [],network_data = [],network_out_data = [],network_in_data = [],hd_data = [];
+                for (var i = 0; i < 100; ++i){
+                        cpu_data.push([i, -1]);
+                        mem_data.push([i, -1]);
+                        hd_data.push([i, -1]);
+                }
+                for (var i = 0; i < 100; ++i){
+                        network_out_data.push([i, -1]);
+                        network_in_data.push([i, -1]);
+                }
+    
+    
+                 // setup plot
+                var cpu_options = {
+                    series: { shadowSize: 0 }, // drawing is faster without shadows
+                    yaxis: { min: 0, max:100 },
+                    xaxis: { show: false }
+                };
+                 var mem_options = {
+                    series: { shadowSize: 0 }, // drawing is faster without shadows
+                    yaxis: { min: 0, max:100 },
+                    xaxis: { show: false }
+                };
+                 var network_options = {
+                    series: { shadowSize: 0 }, // drawing is faster without shadows
+                    yaxis: { min: 0, max:1000 },
+                    xaxis: { show: false }
+                };
+                 var hd_options = {
+                    series: { shadowSize: 0 }, // drawing is faster without shadows
+                    yaxis: { min: 0, max:100 },
+                    xaxis: { show: false }
+                };
+    
+                var cpu = $.plot($("#cpu"), [cpu_data], cpu_options);
+                var mem = $.plot($("#mem"), [mem_data], mem_options);
+                var network = $.plot($("#network"), [
+                    { data: network_out_data,lines: { show: true }
+                    },
+                    {  data: network_in_data,lines: { show: true }
+                    }
+                ],network_options);
+                var hd = $.plot($("#hd"), [hd_data], hd_options);
+                //console.log(network_data);
+                function get_server_data() {
+                    $.getJSON('test.php?ser=recv', function(r){
+                        //console.log(r);
+                        update(r);
+                    });
+                }
+    
+    
+                function update(val) {
+                    //画cpu图
+                    val.cpu = parseFloat(val.cpu || 0);
+                    //debugger;
+                    for(var i = 0; i < cpu_data.length; i++) --cpu_data[i][0];
+                    cpu_data.shift();
+                    cpu_data.push([cpu_data.length, val.cpu]);
+    
+                    cpu.setData([cpu_data]);
+                    // since the axes don't change, we don't need to call plot.setupGrid()
+                    cpu.draw();
+    
+                    //画内存图
+                    val.mem = parseFloat(val.mem || 0);
+                    //debugger;
+                    for(var i = 0; i < mem_data.length; i++) --mem_data[i][0];
+                    mem_data.shift();
+                    mem_data.push([mem_data.length, val.mem]);
+    
+                    mem.setData([mem_data]);
+                    // since the axes don't change, we don't need to call plot.setupGrid()
+                    mem.draw();
+                    //画网络图
+                    //console.log(val.network.in);
+                    //出网数据
+                    val.network.out = parseFloat(val.network.out || 0);
+                   // debugger;
+                    for(var i = 0; i < network_out_data.length; i++) --network_out_data[i][0];
+                    network_out_data.shift();
+                    network_out_data.push([network_out_data.length, val.network.out]);
+    
+                    //进网数据
+                    val.network.ins = parseFloat(val.network.ins || 0);
+                    //debugger;
+                    for(var i = 0; i < network_in_data.length; i++) --network_in_data[i][0];
+                    network_in_data.shift();
+                    network_in_data.push([network_in_data.length, val.network.ins]);
+                    
+                    network_data = network_out_data,network_in_data;
+                    //console.log(network_data);
+                    network.setData([network_in_data,network_out_data]);
+                    // since the axes don't change, we don't need to call plot.setupGrid()
+                    network.draw();
+    
+                    
+                    setTimeout(get_server_data, 2000);
+                }
+                get_server_data();
+            });
+        </script>
+
+html代码：
+
+    <div id="warp">
+        <div class="box">
+            <h3>CPU使用率</h3>
+            <div id="cpu" style="width:300px;height:150px;"></div>
+        </div>
+        <div class="box">
+            <h3>内存使用率</h3>
+            <div id="mem" style="width:300px;height:150px;"></div>
+        </div>
+        <div class="box">
+            <h3>网络使用率</h3>
+            <div id="network" style="width:300px;height:150px;"></div>
+        </div>
+        <div class="box">
+            <h3>硬盘使用率</h3>
+            <div id="hd" style="width:300px;height:150px;"></div>
+        </div>
+    </div>
+
+flot的使用方法：
+flot网址：http://code.google.com/p/flot/
+下载 JS 文件，使用方法和 jquery 一样。
+注意：flot是自动绘制在画布标签（canvas）内的，IE不支持，需要添加 excanvas.min.js ，此文件可以在上面给出的flot网址中下载
+示例网址：http://people.iola.dk/olau/flot/examples/参数说明：http://wenku.baidu.com/view/d504613331126edb6f1a1008.html上面的两个网址已经将基础说的很清楚了。
+示例说明：语法： $.plot(id, data, options);1.id :放置 canvas 的 div 的ID2.data :数据，一般为二维数组的形式。例如：[[x1,y1],[x2,y2],[x3,y3] , ...]如果某个数据为空，则对应点将被忽略，且改点前后两个点将不再用直线连接。3.options :样式，用于设置显示样式。 options 的格式：var options = {
+lines: { show: true },
+points: { show: true },
+xaxis: { tickDecimals: 0, tickSize: 1 }
+};
+参数: 1.lines { }  显示直线 show: true 显示    color： "#FFFFFF" 线条颜色   steps: true 阶梯形 2.points { }  显示点3.bars { } 显示直方图4.xaxis { } 横坐标的样式
+例一：http://people.iola.dk/olau/flot/examples/basic.html语法示例：$.plot($("#name"), [ d1,d2,d3 ]);
+参数①：name 为画布所在 div 的 id 。参数②：d2，d3 一般为数列数组 [x,y]，x和y分别表示每个点的横轴和纵轴，例如可以定义如下：var d1 = [];for (var i = 0; i < 14; i += 0.5)d1.push([i, Math.sin(i)]);var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];flot会依据其最大值和画布大小自动设置刻度，例如设置div如下  <div id="placeholder" style="width:100px;height:100px;"></div>则x方向每个像素表示 9/100=0.09 个单位，y方向每个像素表示 12/100=0.12 个单位。
+例二：http://people.iola.dk/olau/flot/examples/graph-types.html语法示例： ?$.plot($("#placeholder"), [    {        data: d1,        lines: { show: true, fill: true}    },    {        data: d2,        bars: { show: true}    },    {        data: d3,        points: { show: true}    },    {        data: d4,        lines: { show: true}    },    {        data: d5,        lines: { show: true},        points: { show: true}    },    {        data: d6,        lines: { show: true, steps: true}    }]);
+参数说明：lins 表示直线，参数 steps:true 表示梯形图，bars 表示直方图，points 表示点状图。与示例一比较，实例二将示例一中的数据用花括号括起，此时需要用 "data:" 指定数据源，逗号之后指定其显示样式。
+例三：指定刻度显示的内容用法实例：?$.plot($("#placeholder"), [{ label: "", data: vData}],{    series: { lines: { show: true}, points: { show: true} },    xaxis: { ticks: [[1, "1月"], [3, "3月"], [5, "5月"], [7, "7月"], [9, "9月"], [11, "11月"]], min: 1, max: 12 },  //指定固定的显示内容    yaxis: { ticks: 5, min: 0 }  //在y轴方向显示5个刻度，此时显示内容由 flot 根据所给的数据自动判断}    );
+其中 vData 为自定义数据var vData = [[1, 103], [2, 28], [3, 135], [4, 130], [5, 145], [6, 155], [7, 155], [8, 155], [9, 155], [10, 155], [11, 155], [12, 155]];         显示效果为：关键参数为 ticks 。可以看到本例中 x轴刻度的显示内容是自己指定的，y轴让 flot 自动划分，当然也可以指定y轴。
+
+

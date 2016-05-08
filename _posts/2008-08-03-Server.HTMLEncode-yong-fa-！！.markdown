@@ -1,0 +1,40 @@
+---
+layout: post
+title:  "Server.HTMLEncode用法！！"
+excerpt: HTMLEncode 方法对指定的字符串应用 HTML 编码
+date:   2008-08-03 22:03:00 +0800
+categories: jekyll update
+---   
+<!--markdown-->Server.HTMLEncodeHTMLEncode
+---------------------------
+
+**一、HTMLEncode 方法对指定的字符串应用 HTML 编码。**
+语法Server.HTMLEncode( string ) 参数
+string
+指定要编码的字符串。
+示例
+脚本
+<%= Server.HTMLEncode("The paragraph tag: <P>") %>
+输出
+The paragraph tag: &lt;P&gt;
+注意 以上输出将被 Web 浏览器显示为
+The paragraph tag: <P>
+如果查看一下源文件或以文本方式打开一个 Web 页，您就可以看到已编码的 HTML
+
+
+<!--more-->
+
+
+二、相关例子解析:
+---------
+
+rs("content")=Server.Htmlencode(Request("content")) :
+rs("content")的意思是说，rs是一个recordset对象，content是数据库表中的一个字段;recordset对象可以操作数据库表的每一条记录，以及其中的每个字段.
+
+Server.Htmlencode的作用:是把某些代码转换成html格式的.
+
+Request("content")是指:返回的上个页面里有一个名字为content的元素的值;它可能是表单里的某个文本框，也有可能是个querystring型的东西
+但是从名字和习惯来判断，它是一个表单的多行文本框，因为它是放置内容用的.
+整体意思是它把上个递交页面传来的文本框里的值，放在数据库中现在打开的记录中的content字段中.
+
+又长见识啦！

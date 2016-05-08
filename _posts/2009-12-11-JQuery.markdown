@@ -1,0 +1,119 @@
+---
+layout: post
+title:  "JQuery 幻灯片效果"
+date:   2009-12-11 23:00:00 +0800
+excerpt: 可以自动播放，并且带左右箭头
+categories: jekyll update
+---   
+<!--markdown-->![79134336e9687e1e0b55a9da.jpg][1]
+可以自动播放，并且带左右箭头
+css:
+
+    .image_show-2{ width:350px; height:140px; position:relative;} 
+    .image_show-2 ul.gallery-2{ list-style:none; width:350px; padding-top:90px;}
+    .image_show-2 ul.gallery-2 li.pre{float:left; width:10px; height:30px; margin:5px 2px 0 2px; background:url(images/left.png) no-repeat left center;}
+    .image_show-2 ul.gallery-2 li.next{float:left; width:10px; height:30px; margin:5px 2px 0 2px; background:url(images/right.png) no-repeat right center;}
+    
+    
+    * html .image_show-2 ul.gallery-2 li.pre{width:10px; height:20px; margin:10px 1px 0 1px;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/left.png');   _ background-image: none; /* IE6 */}
+    * html .image_show-2 ul.gallery-2 li.next{ width:10px; height:20px; margin:10px 1px 0 1px;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/right.png'); background-image: none;}
+    
+    .image_show-2 ul.gallery-2 li.pic-2{ float:left;width:49px; height:31px; margin:5px 3px 0 3px;}
+    .image_show-2 ul.gallery-2 li img{ border:1px #fff solid;} 
+
+
+<!--more-->
+
+
+js:
+
+    $(function(){
+    var index_2 = 1;
+    //initialize small pic opacity to 0.6
+    $(".pic-2 img").animate({opacity: 0.6}, 0);
+    $(".image_show-2").css({background:"url(images/t1.jpg) no-repeat center bottom"});
+    $(".g-1").animate({opacity: 1}, 0);
+    //when mouse over change pic opacity to 1
+    $(".pic-2 img").mouseover(function(){
+    $(this).animate({opacity: 1}, 0);
+    });
+    //when mouse out resume pic opacity to 0.6
+    $(".pic-2 img").mouseout(function(){
+    $(this).animate({opacity: 0.6}, 0);
+    });
+    //click small pic ,change big pic to show
+    $(".pic-2 > img").click(function(){
+    var src_path = $(this).attr("src");
+    index_2 = $(this).attr("alt");
+    pic_2_ShowLight();
+    $(".image_show-2").css({background:"url('"+src_path+"') no-repeat center bottom"});
+    });
+    
+    
+    function changePic_2(){
+    setInterval(function() { 
+    $(".image_show-2").css({background:"url('images/t"+index_2+".jpg') no-repeat center bottom"});
+    pic_2_ShowLight();
+    index_2++;
+    if(index_2==6){
+    index_2=1;
+    }
+    },12000);
+    }
+    
+    changePic_2();
+    
+    function pic_2_ShowLight(){
+    //when to one pic its opacity change to 1
+    $(".pic-2 >img").animate({opacity: 0.6}, 0);
+    if(index_2==1){
+    $(".g-1").animate({opacity: 1}, 0);
+    }if(index_2==2){
+    $(".g-2").animate({opacity: 1}, 0);
+    }if(index_2==3){
+    $(".g-3").animate({opacity: 1}, 0); 
+    }if(index_2==4){
+    $(".g-4").animate({opacity: 1}, 0);
+    }if(index_2==5){
+    $(".g-5").animate({opacity: 1}, 0);
+    }     
+    }
+    
+    //click pre or next to look a new pic
+    $(".pre").click(function(){
+    index_2 = index_2-1; 
+    if(index_2==0){
+    index_2=5;
+    }
+    pic_2_ShowLight();
+    $(".image_show-2").css({background:"url('images/t"+index_2+".jpg') no-repeat center bottom"}); 
+    });
+    
+    $(".next").click(function(){
+    index_2 = index_2+1; 
+    if(index_2==6){
+    index_2=1;
+    }
+    pic_2_ShowLight();
+    $(".image_show-2").css({background:"url('images/t"+index_2+".jpg') no-repeat center bottom"}); 
+    });
+    });
+
+html:
+
+    <div class="image_show-2"> 
+    <ul class="gallery-2">
+    <li class="pre"></li>
+    <li class="pic-2"><img class="g-1" src="images/t1.jpg" width="47" height="29" alt="1"/></li>
+    <li class="pic-2"><img class="g-2" src="images/t2.jpg" width="47" height="29" alt="2"/></li>
+    <li class="pic-2"><img class="g-3" src="images/t3.jpg" width="47" height="29" alt="3"/></li>
+    <li class="pic-2"><img class="g-4" src="images/t4.jpg" width="47" height="29" alt="4"/></li>
+    <li class="pic-2"><img class="g-5" src="images/t5.jpg" width="47" height="29" alt="5"/></li>
+    <li class="next"></li>
+    </ul>
+    </div>
+
+原文地址：http://hi.baidu.com/shiryu963/blog/item/e8b3812ad7a4b4325243c182.html
+
+
+  [1]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/3845660789.jpg

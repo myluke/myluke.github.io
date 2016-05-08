@@ -1,0 +1,56 @@
+---
+layout: post
+title:  "php 计算汉字个数函数和过滤脏话函数"
+date:   2010-10-18 13:28:00 +0800
+excerpt:  用过的例子,记录下
+categories: jekyll update
+---   
+<!--markdown-->    /**
+    * 返回文字个数,中文占两个字符
+    * @param string $str
+    * @return int
+    */
+    function len($str){
+       preg_match_all ('#(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+)#s',$str,$array, PREG_PATTERN_ORDER);
+    $len=0;
+       $i=0;
+    foreach($array[0] as $val){
+    $len+=ord($val)>=128 ?2:1;
+       $i++;
+    }
+    return $i;
+       }
+    /**
+    *
+    * 过滤关键字
+    * @param string $data //需要过滤的文字
+    * @param string $str //要过滤词语使用|分割
+    * @return string
+    *
+    **/
+    function dirty($data){
+    global $dbo;
+    $sql= 'select * from `blog_config` ';
+    $rs = $dbo->query($sql);
+    $str =$rs[0]['badstrs'];
+    if(!empty($data)){
+       $strarr=explode('|',$str);
+       $num =count($strarr);
+       for($i=0;$i<$num;$i++){
+       $l =len($strarr[$i]);
+       for($j=0;$j<$l;$j++){
+       $x.='*';
+       }
+       $data= preg_replace("/$strarr[$i]/i",$x,$data); //脏话过滤
+       $x=null;
+       }
+       return $data;
+    }
+    }
+
+用法：
+
+    <?php
+    $str =’强奸跌幅为而为沃尔沃额他妈的dkkjgsb爱的色放fuck’;
+    echo dirty($str);
+    ?>

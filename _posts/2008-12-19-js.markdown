@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "js 全选按钮 和 删除代码"
+date:   2008-12-19 22:43:00 +0800
+excerpt: 记录下
+categories: jekyll update
+---   
+<!--markdown--><script>
+function CheckAll(form) {
+for (var i=0;i<form.elements.length;i++)    {
+    var e = form.elements[i];
+    if (e.name != 'chkall')       e.checked = form.chkall.checked; 
+   }
+}
+</script>
+全选复选框代码：<input name="chkall" type="checkbox" id="chkall" value="select" onClick="CheckAll(this.form)" style="border:0">
+删除复选框代码：<input type="checkbox" name="che[]" value="<?=$row['bianhao'] ?> " style="border:0">
+删除按钮代码：<input name=del type="submit" value="删 除" onClick="return confirm('此操作无法恢复！！！请慎重！！！\n\n确定要删除所选择的销售记录吗？')" class="button">

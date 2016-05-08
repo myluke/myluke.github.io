@@ -1,0 +1,26 @@
+---
+layout: post
+title:  "自定义 htmlencode 函数"
+date:   2008-10-10 22:33:00 +0800
+excerpt: 用过的例子记录下
+categories: jekyll update
+---   
+<!--markdown-->    <%
+    function htmlencode(l1)
+    on error resume next
+    dim I2,I1,I3,I4,i
+       I1=l1
+       if len(I1)>0 then
+        I3=split("quot,gt,lt,iexcl,cent,pound,curren,yen,brvbar,sect,uml,copy,ordf,laquo,not,shy,reg,macr,deg,plusmn,sup2,sup3,acute,micro,para,middot,cedil,sup1,ordm,raquo,frac14,frac12,frac34,iquest,agrave,aacute,acirc,atilde,auml,aring,aelig,ccedil,egrave,eacute,ecirc,euml,igrave,iacute",",")
+        I4=split(""",>,<,¡,¢,£,¤,¥,¦,§,¨,©,ª,«,¬,­,®,¯,°,±,²,³,´,µ,¶,·,¸,¹,º,»,¼,½,¾,¿,À,Á,Â,Ã,Ä,Å,Æ,Ç,È,É,Ê,Ë,Ì,Í",",")
+        set I2=new regexp
+         I2.global=true
+         I2.ignorecase=true'忽略大小写
+         for i=0 to ubound(I3)
+          I2.pattern=I4(i):I1=I2.replace(I1,"&"&I3(i)&";")
+         next
+        set I2=nothing
+        htmlencode=I1
+       end if
+    end Function
+    %>

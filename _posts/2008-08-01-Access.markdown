@@ -1,0 +1,46 @@
+---
+layout: post
+title:  "Access 类型数据库连接！"
+excerpt:  asp 连接数据脚本，和简单的加密解密函数
+date:   2008-08-01 15:00:00 +0800
+categories: jekyll update
+---   
+<!--markdown-->> asp 连接数据脚本，和简单的加密解密函数。
+
+
+<!--more-->
+
+
+    <%
+    dim conn
+    dim connstr
+    db="../Database/tyqiye.mdb" '数据库文件位置
+    'on error resume next ‘屏蔽错误代码
+    connstr="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & Server.MapPath(""&db&"")
+    set conn=server.createobject("ADODB.CONNECTION")
+    if err then
+    err.clear
+    else
+    'response.write connstr
+    'response.End
+    conn.open connstr
+    end if
+    //简单的解密函数
+    function decrypt(dcode) 
+    dim texts
+    dim i
+    for i=1 to len(dcode)
+    texts=texts & chr(asc(mid(dcode,i,2))-i)
+    next
+    decrypt=texts
+    end function
+    //简单的加密函数
+    function encrypt(ecode)
+    Dim texts
+    dim i
+    for i=1 to len(ecode)
+    texts=texts & chr(asc(mid(ecode,i,2))+i)
+    next
+    encrypt = texts
+    end function
+    %>

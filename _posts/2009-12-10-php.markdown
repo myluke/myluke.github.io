@@ -1,0 +1,66 @@
+---
+layout: post
+title:  "php access数据库分页显示（实例代码）"
+date:   2009-12-10 22:57:00 +0800
+excerpt: 昨天有网友要俺给他搞个php+access的程序，这个分页和连接access数据库搞死我了，费了一天功夫终于成功了！望对以后用的到的兄弟们有些帮助
+categories: jekyll update
+---   
+<!--markdown-->昨天有网友要俺给他搞个php+access的程序，这个分页和连接access数据库搞死我了，费了一天功夫终于成功了！望对以后用的到的兄弟们有些帮助代码如下：
+
+    <?php
+    $conn = new com(”adodb.connection”);
+    //设置数据库连接驱动
+    $connstr=”provider=microsoft.jet.oledb.4.0;data source=”.realpath(”db1.mdb”);
+    $conn->open($connstr);//调用com类的open()方法来执行上述连接驱动
+    $rs=new com(”adodb.recordset”);
+    $sql=”select * from article”;
+    $rs->open($sql,$conn,1,3);
+    $rs->pagesize=5;
+    if((trim(intval($_GET['page']))==”")||(intval($_GET['page'])>$rs->pagecount)||(intval($_GET['page'])<=0)){
+    
+
+
+<!--more-->
+
+
+    $page=1;
+    }else{
+       $page=intval($_GET['page']);
+        }
+    if($rs->eof||$rs->bof){
+       echo “没有号码！”;
+       }else{
+       
+        $rs->absolutepage=$page;
+        $mypagesize=$rs->pagesize;   
+        while(!$rs->eof && $mypagesize>0){    
+         echo iconv(’gb2312′,’utf-8′,$rs->fields['title'].”<br/>”);
+         $mypagesize–;
+         $rs->movenext;
+         }
+        }
+      
+    //if($page>=2)
+    ?>
+    共<?php echo $rs->pagecount;?>页 第<?php echo $page;?>页 <a href=”?page=1″>首页</a> <a href=”?page=<?php if($page>1){echo $page-1;}else{echo 1;}?>”>上页</a>
+    <?php $i=$page;
+    for($i;$i<=$page+4;$i++){
+    if($i<=$rs->pagecount){
+    echo “<a href=?page=”.$i.”>[".$i."]</a>”;
+    }
+    
+    }?>
+    <a href=”?page=<?php if($page<$rs->pagecount){echo $page+1;}else{echo $rs->pagecount;}?>”>下页</a> <a href=”?page=<?php echo $rs->pagecount;?>”>尾页</a>
+    <?php
+    $rs->Close();          //关闭记录集对象和数据库连接对象
+    $conn->Close();
+    $endtime=time();
+    ?>
+
+记录集对象常用数据成员
+数 据 成 员说明pagesize设置分页显示时，记录集对象一页所容纳的记录数absolutepage设置当前显示的为第几页，首先应设置pagesize的值bof检查当前记录集对象所指位置是否为第一条记录之前eof检查当前记录集对象所指位置是否为最后一条记录之后pagecount显示记录集当前页面总数，首先应设置pageesize的值movenext将记录集对象的指针向下移动一条上述代码涉及到记录集游标的使用，以$rs->open($sql,$conn,A,B)为例，参数A|、B取不同的值使游标具有不同的属性，
+如表9.2、
+表9.3所示。
+表9.2
+                                                              参数A的用法A 的 取 值用    法0只读，当前记录集指针只能下移1只读，当前记录集指针可自由移动2可读写，当前记录集指针可自由移动3可读写，当前记录集指针可自由移动并可看到新增记录表9.3                                                              参数B的用法B 的 取 值用    法1缺省锁定类型，记录集只读，不能修改记录2悲观锁定，当修改记录时，数据提供者将尝试锁定记录以确保成功地编辑记录，只要编辑一开始，则立即锁定记录3乐观锁定，直到用update方法提交更新的记录时才锁定记录4批量乐观锁定，允许修改多个记录，只有调用update batch方法时才锁定记录
+

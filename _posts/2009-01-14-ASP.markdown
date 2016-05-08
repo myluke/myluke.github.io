@@ -1,0 +1,44 @@
+---
+layout: post
+title:  "ASP 类 CLASS入门-ASP技术"
+date:   2009-01-14 22:47:00 +0800
+excerpt: 声明一个类的名字，就是定义一些变量，属性，方法来组成一个类
+categories: jekyll update
+---   
+<!--markdown-->Class 声明
+声明一个类的名字，就是定义一些变量，属性，方法来组成一个类
+这是真的！！！？VBScript中能用类！？！？不知道能不能用于ASP!?这样的话，我就不是能写出像object一样的ASP程序？！说干就干！实践是检验真理的唯一标准，自个动手吧！
+我们常常看到别的程序语言中中都有类的说明，PHP，VB，C++，这个在VBScript中的类的说明，我是第一次听到，我们的日常工作就是网站开发，在这个里面多多少少搞出点经验，像模像样也能自诩为"内行"，所以我就来分享一下我所知道的这个新的东东。我们来看看下面的这个代码吧！(window2000+IIS5.0通过测试)
+
+
+<!--more-->
+
+
+<%
+声明一个名为aspcn的类 
+Class aspcn
+Private aspcn
+初始化类
+Private Sub Class_Initialize
+aspcn="Aspcn Is Good!<br>"
+End Sub 
+定义一个函数
+Public Function DoIt()
+DoIt=aspcn
+End Function
+定义一个方法
+Public Sub QueryStr(stat)
+Response.write stat
+End Sub
+End Class
+Set Hi_aspcn=New aspcn 定义一个名为Hi_aspcn的aspcn对象实例
+response.write Hi_aspcn.DoIt
+varstr="Aspcn Is Cool!<br><font color=red>http://www.aspcn.com</font><br>WelCome!!!"
+Hi_aspcn.QueryStr varstr
+%>
+这是很简单的一个程序，我们在其中声明了一个名为aspcn的类,建立了一个DoIt函数，一个QueryStr方法，这个程序很简单相信大家能看懂，它的显示如下：
+Aspcn Is Good!
+Aspcn Is Cool!
+http://www.aspcn.com
+WelCome!!!
+可以把我们常用到的程序写成一个类，到时候就用<！--#include file="xxx.asp"-->来包含进来就行了，这给我们开发程序又提供了新的空间

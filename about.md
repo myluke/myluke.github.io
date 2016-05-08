@@ -1,15 +1,14 @@
 ---
 layout: page
-title: About
-permalink: /about/
 ---
+{% assign current_year = site.time | date: '%Y' %}
 Luke
 ----
 
  - 性 别：男
- - 年 龄：27岁
+ - 年 龄：{{ current_year | minus: 1988 }}岁
  - 籍 贯：山东
- - 工 作：5年
+ - 工 作：{{ current_year | minus: 2010 }}年
  - 手 机：15000834891
  - 邮 箱：luke@kanheze.com
  - 主 页：[http://blog.kanheze.com][1]
@@ -17,8 +16,8 @@ Luke
 自我评价
 ----
 
- - 6年编程经验，主攻PHP开发，擅长电子商务程序开发；
- - 2年多的电子商务网站开发经验；2年网站建设开发经验
+ - {{ current_year | minus: 2010 }}年编程经验，主攻PHP开发，擅长电子商务程序开发；
+ - {{ current_year | minus: 2014 }}年多的电子商务网站开发经验；{{ current_year | minus: 2014 }}年网站建设开发经验
 
 职业专长
 ----

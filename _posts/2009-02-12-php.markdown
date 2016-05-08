@@ -1,0 +1,67 @@
+---
+layout: post
+title:  "php 无限分类解决方案"
+date:   2009-02-12 22:49:00 +0800
+excerpt: 例子记录下,不喜勿看
+categories: jekyll update
+---   
+<!--markdown-->![无限分级][1]
+while 写的：
+
+    function sort1($id,$number)
+    {
+            global $conn;
+            for($i=0;$i<$number;$i++) {
+              $nbsp.= '&nbsp;&nbsp;&nbsp;';
+            }
+            $sql = mysql_query("select * from `sort` where fid=".$id."",$conn);
+            while ($info=mysql_fetch_array($sql)) {
+                //echo "循环变量i的数值：".$i."<br/>";
+                echo $nbsp.'<option value=" '.$info["id"].'" >'.$nbsp.'┠'.$info["fname"].'</option>';
+                $sql1 = mysql_query("select * from sort where fid=".$info["id"]."",$conn);
+                if ($arr = mysql_fetch_array($sql1)) {
+                    echo sort1($info["id"],$number+1);
+                }
+            }
+    }
+
+
+<!--more-->
+
+
+do--while 写的：
+
+    function sort1($id,$number)
+    {
+        global $conn;
+                for($i=0;$i<$number;$i++) {
+                  $nbsp.= '&nbsp;&nbsp;&nbsp;';
+                }
+        $sql=mysql_query("select * from `sort` where fid=".$id."",$conn);
+        $total=mysql_num_rows($sql);
+        $i=0;
+        do{
+        $i++; 
+        //echo "循环变量i的数值：".$i."<br/>";
+        $info=mysql_fetch_array($sql);
+        echo $nbsp.'名字：【'.$info["fname"].'】id号：【'.$info["id"].'】fid号：【'.$info["fid"].'】<br/>';
+        $sql1=mysql_query("select count(*) as total from sort where fid=".$info["id"]."",$conn);
+        $arr=mysql_fetch_array($sql1);
+        $sum=$arr["total"];
+         if($sum>0){
+          echo sort1($info["id"],$number+1); 
+         }
+        }while($i<$total);
+    }
+    <form method="post" action="sort.php">
+    <select name="sortid">
+          <option value="0">-- 顶级分类 --</option>
+          <?php echo sort1(0,0); ?>
+        </select><br/>
+        分类名<input name="sortname" type="text" size="20" />
+    
+        <input type="submit" name="button" id="button" value="添加" />
+    </form>
+
+
+  [1]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/1895253266.jpg

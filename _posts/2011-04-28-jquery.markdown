@@ -1,0 +1,10 @@
+---
+layout: post
+title:  "jquery 点击平滑的返回顶部代码"
+date:   2011-04-28 13:38:00 +0800
+excerpt: 简单的代码,记录下
+categories: jekyll update
+---   
+<!--markdown-->jquery 平滑返回顶部实例代码：
+
+    <div style="position:fixed; bottom:50px; left:1120px; width:20px;"><a href="javascript:;" onclick="jQuery('html, body').animate({scrollTop: '0px'}, 300);return false;">返回顶部</a> </div>
