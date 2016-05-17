@@ -222,8 +222,9 @@ http {
 query_string = s=/Admin/User/personal.html
 request_uri = /Admin/User/personal.html
 
-
-`$args   |   请求中的参数;
+|变量|描述|
+|---|---|
+$args   |   请求中的参数;
 $binary_remote_addr |   远程地址的二进制表示
 $body_bytes_sent    |   已发送的消息体字节数
 $content_length |   HTTP请求信息里的"Content-Length";
