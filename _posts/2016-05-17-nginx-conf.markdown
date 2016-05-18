@@ -2,7 +2,8 @@
 layout: post
 title:  "nginx.conf文件详解"
 date:   2016-05-17 13:18:00 +0800
-excerpt: nginx.conf文件详解 这个应该很详细了
+excerpt: nginx.conf文件详解 很详细的解释了
+author: Luke
 categories: jekyll update
 ---   
 
