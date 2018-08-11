@@ -22,11 +22,14 @@ Luke
 职业专长
 ----
  - 熟悉 LNMP (Linux/Nginx/MySql/PHP）环境上开发；
- - 熟练使用 PHP/ASP/JavaScript 编程，且有开发经验；
- - 熟悉多种PHP框架和JavaScript框架，使用Laravel/Thinkphp/jQuery框架经验；
- - 熟悉HTML/AJAX/JSON/XML/SOAP/CSS/XHTML 等 Web相关技术；
- - 具有 MySQL数据库索引优化、查询优化和存储优化经验；
+ - 熟练使用 PHP/JavaScript/Python/Shell编程，且有丰富的开发经验；
+ - 熟悉使用 jQuery/thinkphp/CI/Laravel框架，且有开发经验；
+ - 熟悉 AJAX/CSS/XHTML等 Web相关技术；
+ - 具备大流量（日PV亿级），高并发程序开发经验；
+ - 具备 MySQL数据库索引优化、查询优化经验；
  - 具备良好的代码编程习惯及较强的文档编写能力；
+ - 有良好的沟通、表达、项目分析能力，设计能力；
+ - 有责任心，有钻劲，有团队合作精神；
 
 教育经历
 ----
