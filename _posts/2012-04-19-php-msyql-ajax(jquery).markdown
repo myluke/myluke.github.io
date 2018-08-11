@@ -21,6 +21,7 @@ categories: jekyll update
   [2]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/1843448956.jpg
 test.php 文件代码如下：
 
+```
     <?php
       $link=mysql_connect( 'localhost','root', '123456' );
       $conn = mysql_select_db('test',$link);
@@ -77,3 +78,4 @@ test.php 文件代码如下：
         <div class="text"></div>
     </div>
     </body></html>
+```

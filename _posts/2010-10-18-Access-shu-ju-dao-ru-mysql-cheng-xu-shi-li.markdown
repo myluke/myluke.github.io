@@ -11,7 +11,7 @@ categories: jekyll update
 
 <!--more-->
 
-
+```
     <?php
     include 'config.php';
     ?>
@@ -99,3 +99,4 @@ categories: jekyll update
     ?>
     </body>
     </html>
+```
