@@ -7,7 +7,7 @@ date:   2018-08-13 13:18:00 +0800
 categories: jekyll update
 ---   
 
-分享几个工作中用到的小工具，希望能帮到大伙。
+分享几个工作中用到的小工具，希望能帮到大伙。其实最实用的是一次登录几十台机器查日志。
 
 # 一、登录机器查日志
 
@@ -54,7 +54,7 @@ alias up='/Users/用户名/up.sh'
 * ![步骤2](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang4.png)
 * 4、配置安居客静态扫描规则
 * ![步骤3](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang5.png)
-* 5、创建授权token：https://sonar.corp.anjuke.com/account/security/
+* 5、创建授权token：https://sonar.xxx.com/account/security/
 * ![步骤4](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang7.png)
 * 6、填写token完成
 * ![步骤5](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang6.png)
