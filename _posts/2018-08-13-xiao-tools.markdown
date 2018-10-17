@@ -35,9 +35,9 @@ alias up='/Users/用户名/up.sh'
 ### 3、设置iterm2
 
 * 1、按键command+O
-* ![步骤1](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang1.png)
+* ![步骤1](http://static.kanheze.com/fenxiang1.png)
 * 2、
-* ![步骤2](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang2-1.png)
+* ![步骤2](http://static.kanheze.com/fenxiang2-1.png)
 * 3、返回第一步选中要登录的机器，然后点击NewTab按钮，等待登录。
 * 4、然后按键command+shift+i,同时操作所有登录的机器。
 
@@ -48,26 +48,26 @@ alias up='/Users/用户名/up.sh'
 ## 步骤
 
 * 1、在线安装，不行就用第二种硬盘安装
-* ![步骤1](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang3.png)
+* ![步骤1](http://static.kanheze.com/fenxiang3.png)
 * 2、下载插件包 链接: [https://pan.baidu.com/s/1l1OJKeyDu1ZTivQ6GsQ8Gw](https://pan.baidu.com/s/1l1OJKeyDu1ZTivQ6GsQ8Gw) 密码: yqum
 * 3、硬盘安装，选中下载的压缩包不要解压
-* ![步骤2](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang4.png)
+* ![步骤2](http://static.kanheze.com/fenxiang4.png)
 * 4、配置安居客静态扫描规则
-* ![步骤3](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang5.png)
+* ![步骤3](http://static.kanheze.com/fenxiang5.png)
 * 5、创建授权token：https://sonar.xxx.com/account/security/
-* ![步骤4](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang7.png)
+* ![步骤4](http://static.kanheze.com/fenxiang7.png)
 * 6、填写token完成
-* ![步骤5](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang6.png)
+* ![步骤5](http://static.kanheze.com/fenxiang6.png)
 * 7、PhpStorm 扫描结果
-* ![步骤6](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang8.png)
+* ![步骤6](http://static.kanheze.com/fenxiang8.png)
 
 # 三、TextBar：彻底玩转你的 Menubar
 
 ## 文章链接：[https://www.waerfa.com/textbar](https://www.waerfa.com/textbar)
 ## 演示图
-![演示图](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang9.png)
+![演示图](http://static.kanheze.com/fenxiang9.png)
 # 四、善用 Popclip 插件
 
 ## 文章链接：[https://www.ifanr.com/app/507343](https://www.ifanr.com/app/507343)
 ## 演示图
-![演示图](http://7vzoi7.com1.z0.glb.clouddn.com/fenxiang10.jpg)
+![演示图](http://static.kanheze.com/fenxiang10.jpg)

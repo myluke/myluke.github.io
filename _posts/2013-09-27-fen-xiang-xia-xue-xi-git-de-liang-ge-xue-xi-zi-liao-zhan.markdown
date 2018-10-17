@@ -16,5 +16,5 @@ categories: jekyll update
 一部分目录预览：![git学习1][2]
 
 
-  [1]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/869595062.jpg
-  [2]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/388502914.jpg
+  [1]: http://static.kanheze.com/2015/02/869595062.jpg
+  [2]: http://static.kanheze.com/2015/02/388502914.jpg

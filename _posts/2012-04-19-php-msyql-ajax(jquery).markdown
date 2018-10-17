@@ -17,8 +17,8 @@ categories: jekyll update
 ![数据库字段][2]
 
 
-  [1]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/680885848.jpg
-  [2]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/1843448956.jpg
+  [1]: http://static.kanheze.com/2015/02/680885848.jpg
+  [2]: http://static.kanheze.com/2015/02/1843448956.jpg
 test.php 文件代码如下：
 
 ```

@@ -13,8 +13,8 @@ categories: jekyll update
 ![曲线图][2]
 
 
-  [1]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/3430954118.jpg
-  [2]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/02/3278298191.jpg
+  [1]: http://static.kanheze.com/2015/02/3430954118.jpg
+  [2]: http://static.kanheze.com/2015/02/3278298191.jpg
 因为数据库中数据没变所以上边4张图的数据都不变，获取的cpu、内存、网络、硬盘都是有python脚本去执行获取，插入数据库中，再使用php+ajax 去每个两秒去循环读取数据，原理就是这样，下面放下代码。
 test.php文件代码
 

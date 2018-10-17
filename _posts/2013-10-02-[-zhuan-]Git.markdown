@@ -414,6 +414,6 @@ http://www.oschina.net/translate/a-successful-git-branching-model
 转载地址：[http://zhengkun.info/2014/10/09/git_usage.html][2]
 
 
-  [1]: http://7vzoi7.com1.z0.glb.clouddn.com/2015/03/3941720255.png
+  [1]: http://static.kanheze.com/2015/03/3941720255.png
 
 
