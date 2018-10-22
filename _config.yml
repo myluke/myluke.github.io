@@ -23,3 +23,5 @@ navs:
 
 gems: [jekyll-paginate]
 
+
+theme: jekyll-theme-midnight
