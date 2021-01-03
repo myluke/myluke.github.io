@@ -79,7 +79,9 @@ SAPI_API double sapi_get_request_time(void)
 # 做几个实验
 
 * 实验1： apc.use_request_time = 1 默认配置，如果在这个配置下我们写下面的代码，运行在 fastcgi 或者 cli 模式下，都会出现 success ，我们就会认为 apcu 的缓存有问题
+
 ```
+
 <?php
 
 // apc.use_request_time = 1
@@ -113,10 +115,13 @@ if($val){
     echo "fail\n";
 
 }
+
 ```
+
 * 实验2： apc.use_request_time = 0 fastcgi 模式，2个文件先后执行，间隔 TTL 以上
+
 ```
-    ***** set.php *****
+***** set.php *****
 
 <?php
 
@@ -155,7 +160,8 @@ if($val){
 * 实验3： apc.use_request_time = 0 cli 模式
 
 ```
-   <?php
+
+<?php
 
 // apc.use_request_time = 0
 
@@ -184,6 +190,7 @@ if($val){
     echo "fail\n";
 
 } 
+
 ```
 # 总结
 * 生产环境中引入的组件还是要多了解每个参数的意义，这样才能避免未来的重大隐患。
