@@ -1,0 +1,193 @@
+---
+layout: post
+title:  "APCu TTL 在swoole 模式下问题"
+excerpt: cli swoole 模式下 apc.use_request_time = 1 对于 cli 模式是有影响的
+author: Luke
+date:   2021-01-03 13:18:00 +0800
+categories: jekyll update
+---
+# 背景
+* PHP是以多进程的方式提供服务，所以本身有些限制，比如 ：
+* 以多进程的方式运行，默认进程之前不能共性数据。
+* fastcgi 模式中一次请求完成后，默认所有的资源都全部释放，所以不能像java 那样，设置个静态变量，后续的所有请求都可以共享。
+* 目前我司使用的 PHP 组件的配置都是通过云端统一下发的，针对这2个缺陷，使用了 APCu 扩展来缓存配置。
+* 比如我们自己搭建的cache php client的库就使用了APCu来保存服务相关配置，当本地发请求的时候，就不用每次向云端请求配置，减轻了云配置服务器的压力。但是本地缓存的时间不能太
+* 长，由于PHP自身的限制，如果做一个长连接实时下发会比较难。折中的方案是设置比较短的本地缓存时间，比如1分钟，这样云端做更改后，1分钟内，php 本地缓存过期，就可以感知到最新的
+* 配置。所以缓存的过期时间 TTL 就非常重要。
+
+# 问题现象
+* 某次cache的管理员做cache实例的迁移，发现迁移完成后，使用这些实例的业务频繁报错，持续时间很长。看日志发现 cache client 连接的还是老的实例IP，
+* 最后将所有的业务PHP 都重启才解决了这个问题。
+
+# 发现问题原因
+* cache 实例迁移后，云平台的最新的实例列表已经去掉了迁移前的实例，但是 PHP cache client 没生效，看起来就是 APCu的缓存有问题，后来脱离 cache 的场景，
+* 自己随便测试自定义的key 发现果然设置的 TTL时间过了以后，缓存还是可以访问，并且是可以必现的（cli swoole 模式），必现的问题就非常好定位。
+* 通过搜索发现是 APCu 的一个参数（apc.use_request_time）导致了这个问题，默认 apc.use_request_time = 1 ，通过设置apc.use_request_time = 0 
+* 果然 cli(swoole) 模式下缓存的 TTL 能在准确的时间里过期。 
+
+# 剖析问题原因
+* 我们的业务中 PHP 有2种运行模式，fastcgi、cli(swoole) ，在未修改apc.use_request_time = 0前其值默认是1，通过实验发现 fastcgi 模式 TTL 生效，
+* cli(swoole) 模式TTL不生效，也就是apc.use_request_time = 1 对于 cli 模式是有影响的，fastcgi 模式没有影响。
+* 分析 apcu 代码，发现 apcu 中关于时间都是用 apc_time 来获取，apcu_time 根据 apc.use_request_time 的值不同，有不同的获取方法。
+
+```
+代码引自 apcu-5.1.5/apc.h
+
+#define apc_time() \
+
+(APCG(use_request_time) ? (time_t) sapi_get_request_time() : time(0))
+
+代码引自 php-7.0.13/main/SAPI.c
+
+SAPI_API double sapi_get_request_time(void)
+
+{
+
+    if(SG(global_request_time)) return SG(global_request_time);
+
+    if (sapi_module.get_request_time && SG(server_context)) {
+
+        SG(global_request_time) = sapi_module.get_request_time();
+
+    } else {
+
+        struct timeval tp = {0};
+
+        if (!gettimeofday(&tp, NULL)) {
+
+            SG(global_request_time) = (double)(tp.tv_sec + tp.tv_usec / 1000000.00);
+
+        } else {
+
+            SG(global_request_time) = (double)time(0);
+
+        }
+
+    }
+
+    return SG(global_request_time);
+
+}
+
+```
+
+* use_request_time = 1 返回的是 sapi_get_request_time() ,这个方法获取的是全局变量 global_request_time,global_request_time 在fastcgi 模式下，
+* 每次请求的时候会赋值，中间使用都不修改，cli(swoole)模式下，启动后就不会修改
+  
+* use_request_time = 0 返回的是 time(0) ,也就是每次通过系统获取最新的时间，所以通过修改 use_request_time = 0 解决了 cli（swoole）模式下的问题
+  
+# 做几个实验
+
+* 实验1： apc.use_request_time = 1 默认配置，如果在这个配置下我们写下面的代码，运行在 fastcgi 或者 cli 模式下，都会出现 success ，我们就会认为 apcu 的缓存有问题
+```
+<?php
+
+// apc.use_request_time = 1
+
+$key = "test";
+
+// 设置 TTL = 2s
+
+apcu_store($key,time(),2);
+
+// sleep 5s
+
+sleep (5);
+
+$val = apcu_fetch($key);
+
+if($val){
+
+    // 一定会走到这里
+
+    // 由于 apc.use_request_time 模式下 apcu 获取的时间是 global_request_time
+
+    // fastcgi 模式在一次请求中这个值是不变的，所以计算时间是
+
+    // (global_request_time - global_request_time = 0) < TTL ，永远成立
+
+    echo "success\n";
+
+}else {
+
+    echo "fail\n";
+
+}
+```
+* 实验2： apc.use_request_time = 0 fastcgi 模式，2个文件先后执行，间隔 TTL 以上
+```
+    ***** set.php *****
+
+<?php
+
+// apc.use_request_time = 0
+
+$key = "test";
+
+// 设置 TTL = 2s
+
+apcu_store($key,time(),2);
+
+?>
+
+***** get.php *****
+
+<?
+
+$val = apcu_fetch($key);
+
+if($val){
+
+    echo "success\n";
+
+}else {
+
+    // TTL 时间过后，一定会走到这里，每次fastcgi 请求 global_request_time 都会更新
+
+    echo "fail\n";
+
+}
+
+?>
+
+
+```
+* 实验3： apc.use_request_time = 0 cli 模式
+
+```
+   <?php
+
+// apc.use_request_time = 0
+
+$key = "test";
+
+// 设置 TTL = 2s
+
+apcu_store($key,time(),2);
+
+// sleep 5s
+
+sleep (5);
+
+$val = apcu_fetch($key);
+
+if($val){
+
+    echo "success\n";
+
+}else {
+
+    // 一定会走到这里，因为 store ，fetch 每次都是获取最新的系统时间，
+
+    // sleep 5s 后，缓存的 TTL 是2s，缓存过期
+
+    echo "fail\n";
+
+} 
+```
+# 总结
+* 生产环境中引入的组件还是要多了解每个参数的意义，这样才能避免未来的重大隐患。
+* 做重大变更前测试要全面，我们这次引入 cache，测试只是重点检查了业务有没有问题，并没有演习当云端配置变更时，业务到底有没有受到影响，要是有演习，其实问题可以早发现。
+
+
+
