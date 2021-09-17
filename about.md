@@ -23,7 +23,7 @@ Luke
 ----
  - 熟悉 LNMP (Linux/Nginx/MySql/PHP）环境上开发；
  - 熟练使用 PHP/Java/JavaScript/Golang/Shell编程，且有丰富的开发经验；
- - 熟悉使用 jQuery/Thinkphp/Laravel/Springbot/Echo框架，且有开发经验；
+ - 熟悉使用 jQuery/Thinkphp/Laravel/SpringBoot/Echo框架，且有开发经验；
  - 熟悉 AJAX/CSS/XHTML等 Web相关技术；
  - 具备大流量（日PV亿级），高并发程序开发经验；
  - 具备 MySQL数据库索引优化、查询优化经验；
