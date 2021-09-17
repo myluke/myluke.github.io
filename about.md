@@ -16,14 +16,14 @@ Luke
 自我评价
 ----
 
- - {{ current_year | minus: 2010 }}年编程经验，主攻PHP开发，擅长电子商务程序开发；
+ - {{ current_year | minus: 2010 }}年编程经验，主攻PHP&Java开发，擅长大流量高并发ToB端程序开发；
  - {{ current_year | minus: 2014 }}年多的电子商务网站开发经验；{{ current_year | minus: 2014 }}年网站建设开发经验
 
 职业专长
 ----
  - 熟悉 LNMP (Linux/Nginx/MySql/PHP）环境上开发；
- - 熟练使用 PHP/JavaScript/Python/Shell编程，且有丰富的开发经验；
- - 熟悉使用 jQuery/thinkphp/CI/Laravel框架，且有开发经验；
+ - 熟练使用 PHP/Java/JavaScript/Golang/Shell编程，且有丰富的开发经验；
+ - 熟悉使用 jQuery/Thinkphp/Laravel/Springbot/Echo框架，且有开发经验；
  - 熟悉 AJAX/CSS/XHTML等 Web相关技术；
  - 具备大流量（日PV亿级），高并发程序开发经验；
  - 具备 MySQL数据库索引优化、查询优化经验；
@@ -44,5 +44,9 @@ Luke
  - 2012.8  — 2013.9 就职于 上海商派网络科技有限公司 （shopex.cn），主要根据公司产品定制开发。
  - 2010.3 — 2012.6 就职于 上海迈若网络科技有限公司 （manro.com.cn），主要独立开发网站程序。
 
+公众号
+----
+- 维护很久了，目前有近 `6k` 猿类粉丝
+<img src="{{site.url}}/assets/images/weixin.png">
 
   [1]: http://blog.kanheze.com
