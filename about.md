@@ -11,12 +11,12 @@ Luke
  - 工 作：{{ current_year | minus: 2010 }}年
  - 手 机：15000834891
  - 邮 箱：luke@kanheze.com
- - 主 页：[http://blog.kanheze.com][1]
+ - 主 页：[http://i.kanheze.com][1]
 
 自我评价
 ----
 
- - {{ current_year | minus: 2010 }}年编程经验，主攻PHP&Java开发，擅长大流量高并发ToB端程序开发；
+ - {{ current_year | minus: 2010 }}年编程经验，主攻PHP&Golang&Java开发，擅长大流量高并发ToB端程序开发；
  - {{ current_year | minus: 2014 }}年多的电子商务网站开发经验；{{ current_year | minus: 2014 }}年网站建设开发经验
 
 职业专长
